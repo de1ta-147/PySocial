@@ -1,1 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Réseau Social</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
 
+<div class="parent">
+    <div class="div1">
+    {% if username %}
+        <p>Connecté en tant que : <strong>{{ username }}</strong></p>
+        <a href="{{ url_for('logout') }}">Se déconnecter</a>
+    {% else %}
+        <p>
+            <a href="{{ url_for('login') }}">Se connecter</a> |
+            <a href="{{ url_for('register') }}">S'inscrire</a>
+        </p>
+    {% endif %}
+    </div>
+    <div class="div2">
+    <b> Liste d'amis </b>
+    {% if friends %}
+        <ul>
+        {% for friend in friends %}
+            <li>{{ friend }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun ami pour le moment.</p>
+    {% endif %}
+    </div>
+
+    <div class="div3">
+    <b> Publications </b>
+    </div>
+
+    <div class="div4">
+    <b> Discussion </b>
+    </div>
+</div>
+
+</body>
+</html>
