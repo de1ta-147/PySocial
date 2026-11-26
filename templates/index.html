@@ -10,6 +10,11 @@
 
 <div class="parent">
     <div class="div1">
+    
+    {% if username == "admin" %}
+        <a href="{{ url_for('stats') }}">Panneau d’administration</a>
+    {% endif %}
+
     {% if username %}
         <p>Connecté en tant que : <strong>{{ username }}</strong></p>
         <a href="{{ url_for('logout') }}">Se déconnecter</a>
@@ -22,6 +27,9 @@
     </div>
     <div class="div2">
     <b> Liste d'amis </b>
+    {% if username %}
+        <p><a href="{{ url_for('friends_page') }}">Gérer mes amis</a></p>
+    {% endif %}
     {% if friends %}
         <ul>
         {% for friend in friends %}
