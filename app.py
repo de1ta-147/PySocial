@@ -49,11 +49,84 @@ def index():
             friends = [friend_id for (friend_id,) in cursor.fetchall()]
         finally:
             conn.close()
-    friends=["simon", "tristan"]
     return render_template(
         "index.html",
         username=session.get("username"),
         friends=friends
+    )
+
+@app.route("/stats")
+def stats():
+    pass
+
+@app.route("/friends")
+def friends_page():
+    user_id = session.get("id")
+    if user_id is None:
+        return redirect(url_for("login"))
+
+    return render_template(
+        "friends.html",
+        friends=get_friends(user_id),
+    )
+
+def get_friends(user_id):
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            SELECT users.id, users.username
+            FROM friends
+            JOIN users ON users.id = friends.friend_id
+            WHERE friends.user_id = ?
+            ORDER BY users.username
+            """,
+            (user_id,),
+        )
+        friends = cursor.fetchall()
+    finally:
+        conn.close()
+
+    return friends
+
+@app.route("/add-friend", methods=["POST"])
+def ajouter_ami():
+    user_id = session.get("id")
+    if user_id is None:
+        return redirect(url_for("login"))
+
+    friend_id = request.form.get("friend_id", "").strip()
+    erreur = None
+
+    if not friend_id:
+        erreur = "Saisis l'identifiant de la personne à ajouter."
+    elif friend_id == user_id:
+        erreur = "Tu ne peux pas t'ajouter toi-même."
+    else:
+        connection = get_db_connection()
+        try:
+            cursor = connection.cursor()
+            cursor.execute("SELECT 1 FROM users WHERE id = ?", (friend_id,))
+            if cursor.fetchone() is None:
+                error = "Aucun compte ne correspond à cet identifiant."
+            else:
+                try:
+                    cursor.execute(
+                        "INSERT INTO friends (user_id, friend_id) VALUES (?, ?)",
+                        (user_id, friend_id),
+                    )
+                    connection.commit()
+                    return redirect(url_for("friends_page"))
+                except sqlite3.IntegrityError:
+                    erreur = "Cette personne est déjà dans ta liste d'amis."
+        finally:
+            connection.close()
+
+    return render_template(
+        "friends.html",
+        friends=get_friends(user_id),
+        error=erreur,
     )
 
 @app.route("/register", methods=["GET", "POST"])
