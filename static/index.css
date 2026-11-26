@@ -1,1 +1,285 @@
+/* ==========================================================================
+   CHARTE GRAPHIQUE DARK SLATE & BLEU MODERNE - PAGE PRINCIPALE (style.css)
+   Compatible à 100 % avec index.html et ses balises Jinja2
+   ========================================================================== */
+
+/* Reset et configuration de base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+    min-height: 100vh;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+/* ==========================================================================
+   GRILLE PRINCIPALE (.parent) - Architecture 3 colonnes + Barre supérieure
+   ========================================================================== */
+.parent {
+    width: 100%;
+    max-width: 1320px;
+    display: grid;
+    grid-template-columns: 270px 1fr 310px;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        "header header header"
+        "friends feed chat";
+    gap: 1.25rem;
+    min-height: calc(100vh - 3rem);
+}
+
+/* Style commun des cartes en verre dépoli (Glassmorphism sombre) */
+.div1,
+.div2,
+.div3,
+.div4 {
+    background-color: rgba(30, 41, 59, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.35), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================================================
+   DIV 1 : BARRE DE NAVIGATION / STATUT DE CONNEXION
+   ========================================================================== */
+.div1 {
+    grid-area: header;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* Titre de marque généré automatiquement à gauche pour équilibrer la barre */
+.div1::before {
+    content: "Réseau Social";
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Cas utilisateur connecté : regroupement propre du texte et du bouton Déconnexion */
+.div1 p {
+    font-size: 0.95rem;
+    color: #cbd5e1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.div1 p strong {
+    color: #ffffff;
+    background-color: rgba(59, 130, 246, 0.18);
+    border: 1px solid rgba(96, 165, 250, 0.35);
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+/* Bouton "Se déconnecter" (lien enfant direct de .div1) */
+.div1 > a {
+    padding: 0.55rem 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fca5a5;
+    background-color: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.div1 > a:hover {
+    background-color: #ef4444;
+    color: #ffffff;
+    border-color: #ef4444;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+    transform: translateY(-1px);
+}
+
+/* Cas visiteur non connecté : boutons "Se connecter" et "S'inscrire" dans le <p> */
+.div1 p a {
+    padding: 0.55rem 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+/* Premier lien : Se connecter */
+.div1 p a:first-of-type {
+    color: #e2e8f0;
+    background-color: #0f172a;
+    border: 1px solid #334155;
+}
+
+.div1 p a:first-of-type:hover {
+    border-color: #60a5fa;
+    color: #ffffff;
+}
+
+/* Second lien : S'inscrire (bouton d'action principal bleu) */
+.div1 p a:last-of-type {
+    color: #ffffff;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.div1 p a:last-of-type:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.45);
+}
+
+/* ==========================================================================
+   EN-TÊTES COMMUNS DES TROIS PANNEAUX (div2, div3, div4)
+   ========================================================================== */
+.div2,
+.div3,
+.div4 {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+}
+
+.div2 > b,
+.div3 > b,
+.div4 > b {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================================================
+   DIV 2 : COLONNE DE GAUCHE - LISTE D'AMIS
+   ========================================================================== */
+.div2 {
+    grid-area: friends;
+}
+
+.div2 ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.div2 ul li {
+    padding: 0.75rem 1rem;
+    background-color: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #f8fafc;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    transition: border-color 0.2s ease, transform 0.15s ease, background-color 0.2s ease;
+}
+
+/* Pastille de statut en ligne devant chaque ami */
+.div2 ul li::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #22c55e;
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+    flex-shrink: 0;
+}
+
+.div2 ul li:hover {
+    border-color: #3b82f6;
+    background-color: #131c31;
+    transform: translateX(3px);
+}
+
+.div2 > p {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    background-color: rgba(15, 23, 42, 0.6);
+    border: 1px dashed #334155;
+    border-radius: 10px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+}
+
+/* ==========================================================================
+   DIV 3 : COLONNE CENTRALE - FIL DES PUBLICATIONS
+   ========================================================================== */
+.div3 {
+    grid-area: feed;
+}
+
+/* ==========================================================================
+   DIV 4 : COLONNE DE DROITE - DISCUSSION / MESSAGERIE
+   ========================================================================== */
+.div4 {
+    grid-area: chat;
+}
+
+/* ==========================================================================
+   ADAPTATION TABLETTE ET MOBILE (Responsive)
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .parent {
+        grid-template-columns: 240px 1fr;
+        grid-template-rows: auto auto 1fr;
+        grid-template-areas:
+            "header header"
+            "friends feed"
+            "chat feed";
+    }
+}
+
+@media (max-width: 720px) {
+    body {
+        padding: 1rem;
+    }
+
+    .parent {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas:
+            "header"
+            "feed"
+            "friends"
+            "chat";
+    }
+
+    .div1 {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .div1 p {
+        margin-left: 0;
+        width: 100%;
+        justify-content: space-between;
+    }
+}
 
