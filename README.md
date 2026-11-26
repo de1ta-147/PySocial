@@ -9,7 +9,6 @@ Projet NSI Term 1er semestre
 ---
 
 Commandes utiles:
-
-sudo systemctl status reseau-social.service
-sudo systemctl restart reseau-social.service
+`sudo systemctl status reseau-social.service`
+`sudo systemctl restart reseau-social.service`
   
