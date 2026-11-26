@@ -1,1 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="{{ url_for('static', filename='friends.css') }}">
+  <title>Liste D'Amis</title>
+</head> 
+<body>
+  <div class="div1">
+    <h1>Liste d'amis</h1>
+
+    {% if error %}
+      <p role="alert">{{ error }}</p>
+    {% endif %}
+
+    {% if friends %}
+        <ul>
+        {% for friend_id, username in friends %}
+            <li>{{ username }} ({{ friend_id }})</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun ami pour le moment.</p>
+    {% endif %}
+  </div>
+
+  <form method="post" action="{{ url_for('ajouter_ami') }}">
+    <label for="friend_id">Identifiant de la personne à ajouter</label>
+    <input type="text" id="friend_id" name="friend_id" required>
+    <button type="submit">Ajouter</button>
+  </form>
+
+  <p><a href="{{ url_for('index') }}">Retour à l'accueil</a></p>
+</body>
+</html>
 
